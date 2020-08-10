@@ -4,6 +4,7 @@
 // #include "rngUn.h"
 #include "rngExp.h"
 #include <math.h>
+#include "ConfInterval.h"
 
 using namespace std;
 
@@ -24,6 +25,8 @@ int main() {
     double var_tmrs=0, var_us=0, var_vs=0, var_tmf=0;
     double des_tmrs=0, des_us=0, des_vs=0, des_tmf=0;
     int i, r;
+
+    ConfInterval confInterval(tmrs, us, vs, tmf, n);
 
     for(r = 0;r<n;r++) {
         simuladorFilas MeuSimulador(r, 5, r, 10);
@@ -82,20 +85,12 @@ int main() {
 
     cout << endl;
 
-    double t90=1.8331, t95=2.2622, t99=3.2498;
-    double n90=0, n95=0, n99=0;
-    double erro = 5; // 5%
-
-    n90 = pow((100*t90*des_tmf)/(erro*x_tmf), 2.0);
-    n95 = pow((100*t95*des_tmf)/(erro*x_tmf), 2.0);
-    n99 = pow((100*t99*des_tmf)/(erro*x_tmf), 2.0);
-
+    confInterval.calc_all();
     printf("Intervalo de confiança para tempo medio na fila\n");
-    printf("Número de repetições para intervalo de confiança de 90%% e erro 5%%: %.2f\n", n90);
-    printf("Número de repetições para intervalo de confiança de 95%% e erro 5%%: %.2f\n", n95);
-    printf("Número de repetições para intervalo de confiança de 99%% e erro 5%%: %.2f\n", n99);
+    printf("Número de repetições para intervalo de confiança de 90%% e erro 5%%: %.2f\n", confInterval.get_repeticoes(CI_90, 5));
+    printf("Número de repetições para intervalo de confiança de 95%% e erro 5%%: %.2f\n", confInterval.get_repeticoes(CI_95, 5));
+    printf("Número de repetições para intervalo de confiança de 99%% e erro 5%%: %.2f\n", confInterval.get_repeticoes(CI_99, 5));
 
     cout << endl;
-
     return 0;
 }
