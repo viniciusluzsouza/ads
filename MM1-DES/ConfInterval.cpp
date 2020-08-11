@@ -86,9 +86,9 @@ double ConfInterval::get_repeticoes(int interval, double error) {
 }
 
 void ConfInterval::calc_all(){
-    this->calc_med();
-    this->calc_var();
-    this->calc_des();
+    calc_med();
+    calc_var();
+    calc_des();
 }
 
 

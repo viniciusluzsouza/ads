@@ -21,10 +21,7 @@ public:
 int main() {
     int n = 10;
     double tmrs[n], us[n], vs[n], tmf[n];
-    double x_tmrs=0, x_us=0, x_vs=0, x_tmf=0;
-    double var_tmrs=0, var_us=0, var_vs=0, var_tmf=0;
-    double des_tmrs=0, des_us=0, des_vs=0, des_tmf=0;
-    int i, r;
+    int r;
 
     ConfInterval confInterval(tmrs, us, vs, tmf, n);
 
@@ -44,53 +41,22 @@ int main() {
         vs[r] = MeuSimulador.MM1.MeuSimulador->processedEvents / MeuSimulador.MM1.MeuSimulador->simtime;
         tmf[r] = MeuSimulador.MM1.MeuSimulador->queueSizeCounter / MeuSimulador.MM1.MeuSimulador->queueSizeCountedTimes;
 
-        x_tmrs += tmrs[r];
-        x_us += us[r];
-        x_vs += vs[r];
-        x_tmf += tmf[r];
-
         printf("[R=%d] tmrs=%.3f, us=%.3f, vs=%.3f, tmf=%.3f\n", r+1, tmrs[r], us[r], vs[r], tmf[r]);
 
     }
 
-    x_tmrs = x_tmrs/r;
-    x_us = x_us/r;
-    x_vs = x_vs/r;
-    x_tmf = x_tmf/r;
-
-    for(i=0;i<n;i++){
-        var_tmrs += pow(tmrs[i] - x_tmrs, 2.0);
-        var_us += pow(us[i] - x_us, 2.0);
-        var_vs += pow(vs[i] - x_vs, 2.0);
-        var_tmf += pow(tmf[i] - x_tmf, 2.0);
-    }
-
-    // Variancia
-    var_tmrs = var_tmrs / (n-1);
-    var_us = var_us / (n-1);
-    var_vs = var_vs / (n-1);
-    var_tmf = var_tmf / (n-1);
-
-    // Desvio padrao
-    des_tmrs = sqrt(var_tmrs);
-    des_us = sqrt(var_us);
-    des_vs = sqrt(var_vs);
-    des_tmf = sqrt(var_tmf);
-
-    cout << "\n<=============== Resultados " << r << " Repetições ===============>\n" << endl;
-    printf("Tempo médio de requisições no sistema: %.3f (σ²=%.3f, σ=%.3f)\n", x_tmrs, var_tmrs, des_tmrs);
-    printf("Utilização do servidor: %.3f (σ²=%.3f, σ=%.3f)\n", x_us, var_us, des_us);
-    printf("Vazão do sistema: %.3f (σ²=%.3f, σ=%.3f)\n", x_vs, var_vs, des_vs);
-    printf("Tamanho médio da fila: %.3f (σ²=%.3f, σ=%.3f)\n", x_tmf, var_tmf, des_tmf);
-
-    cout << endl;
-
     confInterval.calc_all();
+
+    printf("\n<=============== Resultados %d Repetições ===============>\n\n", r);
+    printf("Tempo médio de requisições no sistema: %.4f (σ²=%.4f, σ=%.4f)\n", (double) confInterval.x_tmrs, confInterval.var_tmrs, confInterval.des_tmrs);
+    printf("Utilização do servidor: %.4f (σ²=%.4f, σ=%.4f)\n", confInterval.x_us, confInterval.var_us, confInterval.des_us);
+    printf("Vazão do sistema: %.3f (σ²=%.4f, σ=%.4f)\n", confInterval.x_vs, confInterval.var_vs, confInterval.des_vs);
+    printf("Tamanho médio da fila: %.4f (σ²=%.4f, σ=%.4f)\n\n", confInterval.x_tmf, confInterval.var_tmf, confInterval.des_tmf);
+
     printf("Intervalo de confiança para tempo medio na fila\n");
     printf("Número de repetições para intervalo de confiança de 90%% e erro 5%%: %.2f\n", confInterval.get_repeticoes(CI_90, 5));
     printf("Número de repetições para intervalo de confiança de 95%% e erro 5%%: %.2f\n", confInterval.get_repeticoes(CI_95, 5));
-    printf("Número de repetições para intervalo de confiança de 99%% e erro 5%%: %.2f\n", confInterval.get_repeticoes(CI_99, 5));
+    printf("Número de repetições para intervalo de confiança de 99%% e erro 5%%: %.2f\n\n", confInterval.get_repeticoes(CI_99, 5));
 
-    cout << endl;
     return 0;
 }

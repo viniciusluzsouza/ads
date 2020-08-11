@@ -9,6 +9,7 @@
 #define CONFINTERVAL_H_
 
 #include <math.h>
+#include <iostream>
 
 #define CI_90 0
 #define CI_95 1
@@ -18,7 +19,7 @@
 
 class ConfInterval {
 public:
-    ConfInterval(double *trms, double *us, double *vs, double *tmf, int len) :
+    ConfInterval(double *tmrs, double *us, double *vs, double *tmf, int len) :
         tmrs(tmrs), us(us), vs(vs), tmf(tmf), len(len)
         { var_tmrs = var_us = var_vs = var_tmf = 0;
           des_tmrs = des_us = des_vs = des_tmf = 0;
@@ -32,13 +33,14 @@ public:
     void calc_des();
 
     double get_repeticoes(int interval, double error);
+    double get_x_tmrs() { return x_tmrs; }
 
-
-private:
-    double *tmrs, *us, *vs, *tmf;
     double var_tmrs, var_us, var_vs, var_tmf;
     double des_tmrs, des_us, des_vs, des_tmf;
     double x_tmrs, x_us, x_vs, x_tmf;
+
+private:
+    double *tmrs, *us, *vs, *tmf;
     int len;
 };
 
