@@ -25,6 +25,8 @@ int main() {
 
     ConfInterval confInterval(tmrs, us, vs, tmf, n);
 
+    printf("\n<========================================================>\n\n");
+
     for(r = 0;r<n;r++) {
         simuladorFilas MeuSimulador(r, 5, r, 10);
         tmrs[r]=0, us[r]=0, vs[r]=0, tmf[r]=0;
@@ -53,7 +55,7 @@ int main() {
     printf("Vazão do sistema: %.3f (σ²=%.4f, σ=%.4f)\n", confInterval.x_vs, confInterval.var_vs, confInterval.des_vs);
     printf("Tamanho médio da fila: %.4f (σ²=%.4f, σ=%.4f)\n\n", confInterval.x_tmf, confInterval.var_tmf, confInterval.des_tmf);
 
-    printf("Intervalo de confiança para tempo medio na fila\n");
+    printf("\n<==== Intervalo de confiança para tempo médio na fila ====>\n\n");
     printf("Número de repetições para intervalo de confiança de 90%% e erro 5%%: %.2f\n", confInterval.get_repeticoes(CI_90, 5));
     printf("Número de repetições para intervalo de confiança de 95%% e erro 5%%: %.2f\n", confInterval.get_repeticoes(CI_95, 5));
     printf("Número de repetições para intervalo de confiança de 99%% e erro 5%%: %.2f\n\n", confInterval.get_repeticoes(CI_99, 5));

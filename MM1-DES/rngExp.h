@@ -7,6 +7,8 @@
 
 #include <math.h>
 
+// Classe para geração de números randômicos uniformes
+
 class rngUn {
 
 public:
