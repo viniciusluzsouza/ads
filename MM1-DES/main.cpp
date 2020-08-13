@@ -28,7 +28,7 @@ int main() {
     printf("\n<========================================================>\n\n");
 
     for(r = 0;r<n;r++) {
-        simuladorFilas MeuSimulador(r, 5, r, 10);
+        simuladorFilas MeuSimulador(r+1, 5, r+1, 10);
         tmrs[r]=0, us[r]=0, vs[r]=0, tmf[r]=0;
 
         //Gerar primeira chegada
@@ -50,7 +50,7 @@ int main() {
     confInterval.calc_all();
 
     printf("\n<=============== Resultados %d Repetições ===============>\n\n", r);
-    printf("Tempo médio de requisições no sistema: %.4f (σ²=%.4f, σ=%.4f)\n", (double) confInterval.x_tmrs, confInterval.var_tmrs, confInterval.des_tmrs);
+    printf("Tempo médio de requisições no sistema: %.4f (σ²=%.4f, σ=%.4f)\n", confInterval.x_tmrs, confInterval.var_tmrs, confInterval.des_tmrs);
     printf("Utilização do servidor: %.4f (σ²=%.4f, σ=%.4f)\n", confInterval.x_us, confInterval.var_us, confInterval.des_us);
     printf("Vazão do sistema: %.3f (σ²=%.4f, σ=%.4f)\n", confInterval.x_vs, confInterval.var_vs, confInterval.des_vs);
     printf("Tamanho médio da fila: %.4f (σ²=%.4f, σ=%.4f)\n\n", confInterval.x_tmf, confInterval.var_tmf, confInterval.des_tmf);
