@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdio.h>
 #include "apacheDES.h"
 #include "MM1base.h"
 // #include "rngUn.h"
@@ -20,7 +21,8 @@ public:
 
 int main() {
     int n = 10;
-    double tmrs[n], us[n], vs[n], tmf[n];
+    int aux = 100000;
+    double tmrs[n], us[n], vs[n], tmf[n], var[aux], semente, lamb;
     int r;
 
     ConfInterval confInterval(tmrs, us, vs, tmf, n);
@@ -59,6 +61,35 @@ int main() {
     printf("Número de repetições para intervalo de confiança de 90%% e erro 5%%: %.2f\n", confInterval.get_repeticoes(CI_90, 5));
     printf("Número de repetições para intervalo de confiança de 95%% e erro 5%%: %.2f\n", confInterval.get_repeticoes(CI_95, 5));
     printf("Número de repetições para intervalo de confiança de 99%% e erro 5%%: %.2f\n\n", confInterval.get_repeticoes(CI_99, 5));
+
+    printf("\n<================== Geração exponencial =================>\n\n");
+
+    semente = 1;
+    lamb = 5;
+    rngExp rng(semente, lamb);
+
+    FILE *p_arq;
+	int i;
+
+	if ((p_arq=fopen("var.txt", "w")) == NULL) {
+		printf("Problemas na abertura do arquivo\n");
+		return 0;
+	}else{
+		printf("Iniciando geração exponencial...\n\n");
+		for (int i = 0; i < aux; i++){
+		        var[i] = rng.exp();
+		}
+		for (int j = 0; j < aux; j++) {
+			if((fprintf(p_arq,"%f\n",var[j]))==EOF) {
+			printf("Erro ao escrever no arquivo!\n");
+			return -1;
+			}
+		}
+		printf("Fim da escrita, observe o arquivo 'var.txt'\n");
+		fclose(p_arq);
+	}
+    printf("\n<========================================================>\n\n");
+
 
     return 0;
 }
