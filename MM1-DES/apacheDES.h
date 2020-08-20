@@ -13,7 +13,7 @@
 #include <queue>
 
 
-#define MAX_SIMTIME 100
+#define MAX_SIMTIME 60*10 //Tempo de simulação para 10 horas
 
 //==================================================================
 // classes evento e simulação - base para o desenvolvimento da simulação
